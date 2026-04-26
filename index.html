@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чорнобиль: Повна Хроніка та Маніфест Пам'яті</title>
+    <style>
+        :root {
+            --yellow: #ffcc00;
+            --danger: #ff4400;
+            --bg: #0a0a0c;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #e0e0e0;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; line-height: 1.6; }
+
+        /* Hero & Nav */
+        .hero { height: 100vh; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('img/aerial_view.jpg') center/cover; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 20px; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); color: var(--yellow); letter-spacing: 5px; margin: 0; text-transform: uppercase; text-shadow: 0 0 20px rgba(255,204,0,0.4); }
+        
+        /* New Experiment Info Block */
+        .experiment-info {
+            max-width: 800px;
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            text-align: left;
+            font-size: 0.95rem;
+            animation: fadeInBlur 1.5s ease-out;
+        }
+        .experiment-info h2 { color: var(--yellow); margin-top: 0; font-size: 1.2rem; text-transform: uppercase; text-align: center; }
+        .experiment-info p { margin-bottom: 10px; }
+        .experiment-info strong { color: var(--yellow); }
+
+        @keyframes fadeInBlur {
+            from { opacity: 0; filter: blur(10px); transform: translateY(20px); }
+            to { opacity: 1; filter: blur(0); transform: translateY(0); }
+        }
+
+        /* Audio Control Button */
+        .audio-control {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 204, 0, 0.2);
+            border: 1px solid var(--yellow);
+            color: var(--yellow);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .audio-control:hover { background: var(--yellow); color: black; }
+
+        nav { position: sticky; top: 0; background: rgba(10,10,12,0.95); padding: 10px; display: flex; justify-content: center; gap: 15px; z-index: 1000; border-bottom: 1px solid var(--yellow); flex-wrap: wrap; }
+        nav a { color: white; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: 0.3s; text-transform: uppercase; }
+        nav a:hover { color: var(--yellow); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        h2.section-title { text-align: center; color: var(--yellow); font-size: 2.5rem; margin-top: 80px; text-transform: uppercase; letter-spacing: 2px; }
+        h3.subsection-title { color: var(--yellow); border-left: 3px solid var(--yellow); padding-left: 15px; margin-top: 40px; }
+
+        /* Grid Systems */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .heroes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        
+        /* Interactive Cards */
+        .card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: 0.4s; position: relative; }
+        .card:hover { border-color: var(--yellow); transform: translateY(-8px); box-shadow: 0 10px 20px rgba(255,204,0,0.1); }
+        .card img { width: 100%; height: 280px; object-fit: cover; transition: 0.5s; }
+        .card:hover img { transform: scale(1.05); }
+        .card-content { padding: 20px; }
+
+        /* Profiles */
+        .profile { text-align: center; padding: 20px; background: rgba(255,255,255,0.03); border-radius: 12px; transition: 0.3s; border-bottom: 3px solid transparent; }
+        .profile:hover { background: rgba(255,255,255,0.08); border-bottom-color: var(--yellow); }
+        .profile img { width: 140px; height: 180px; object-fit: cover; border-radius: 8px; filter: grayscale(1); transition: 0.5s; margin-bottom: 15px; }
+        .profile:hover img { filter: grayscale(0); transform: scale(1.03); }
+
+        .firefighters .profile:hover { border-bottom-color: var(--danger); background: rgba(255,68,0,0.08); }
+        .red-forest-text { border-left: 4px solid #b22222; background: rgba(178,34,34,0.05); padding: 20px; border-radius: 0 12px 12px 0; }
+        
+        .paralax-books { height: 300px; background: url('img/books_chernobyl.jpg') center/cover fixed; border-radius: 12px; margin: 40px 0; display: flex; align-items: center; justify-content: center; position: relative; }
+        .paralax-books::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); border-radius: 12px; }
+        .paralax-text { position: relative; z-index: 1; color: var(--yellow); font-size: 1.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Animations */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.7s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .realities-block { display: flex; flex-wrap: wrap; gap: 30px; align-items: center; background: rgba(255,255,255,0.02); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <h1>ЧОРНОБИЛЬ</h1>
+    <p style="font-size: 1.4rem; letter-spacing: 3px; color: #aaa;">ХРОНІКА • ПОДВИГ • ЗАСТЕРЕЖЕННЯ</p>
+    
+    <div class="experiment-info">
+        <h2>Чому сталася аварія?</h2>
+        <p>Експеримент мали проводити на потужності <strong>700 МВт</strong>. Потужність реактору РБМК – 3200 МВт. 25 квітня в час ночі починають зменшувати потужність.</p>
+        <p>В 3 години 47 хвилин потужність була зменшена до 50% (прибл. 1800 МВт). Але о 14:00 з Києвенерго подзвонили і попросили більше не зменшувати потужність через дефіцит електроенергії. З 14.00 по 23 годину реактор пропрацював на потужності 50%, що призвело до <strong>отруєння ксеноном</strong>.</p>
+        <p>В 0 годин 28 хвилин 26 квітня потужність почали знижувати далі, але оператори припустились помилки і вона впала до <strong>30 МВт</strong>. В 1 годину 0 хвилин реактор починають розганяти, дістаючи стрижні ("гальма").</p>
+        <p>Через зростання реактивності ксенон починає спалюватись. Менше ксенону – більше реактивності. Це замкнене коло призвело до некерованого розгону, поки експеримент продовжувався.</p>
+    </div>
+
+    <audio id="hero-audio" loop>
+        <source src="audio/dispatcher_conversation.mp3" type="audio/mpeg">
+        Ваш браузер не підтримує аудіо елементи.
+    </audio>
+    <button class="audio-control" onclick="toggleAudio()" id="audio-btn">🔊 Увімкнути звук</button>
+</section>
+
+<nav>
+    <a href="#pripyat">Прип'ять</a>
+    <a href="#redforest">Рудий ліс</a>
+    <a href="#radiation">Радіація</a>
+    <a href="#heroes">Герої</a>
+    <a href="#realities">Реалії 2022</a>
+    <a href="#culture">Культура</a>
+    <a href="#accidents">Три аварії</a>
+    <a href="#conclusion">Висновок</a>
+</nav>
+
+<div class="container">
+    
+    <h2 id="pripyat" class="section-title">МІСТО ПРИП'ЯТЬ</h2>
+    <div class="grid fade-in">
+        <div class="card"><img src="img/pripyat_main.jpg" alt="Панорама"><div class="card-content"><h3>Застиглий час</h3><p>Евакуйоване за 3 години. Символ порожнечі.</p></div></div>
+        <div class="card"><img src="img/ferris_wheel.jpg" alt="Колесо"><div class="card-content"><h3>Символ трагедії</h3><p>Колесо, що ніколи не запрацювало для дітей.</p></div></div>
+        <div class="card"><img src="img/collage.jpg" alt="Колаж"><div class="card-content"><h3>Історія в деталях</h3><p>Від будівництва до евакуації.</p></div></div>
+    </div>
+
+    <h2 id="redforest" class="section-title">Рудий ліс</h2>
+    <div class="grid fade-in">
+        <div class="card"><img src="img/red_forest_1.jpeg" alt="Рудий ліс 1"></div>
+        <div class="card"><img src="img/red_forest_2.jpg" alt="Рудий ліс 2"></div>
+        <div class="red-forest-text">
+            <p><strong>«Рудий ліс»</strong> (10 км²) взяв на себе найбільший удар радіоактивного пилу. Доза опромінення: 8 000 – 10 000 рад. Крони сосен спрацювали як фільтр, дерева загинули за лічені дні, змінивши колір на червоно-бурий.</p>
+            <p style="color: #ff9999; font-size: 0.9rem;">*У 2022 році окупанти рили тут окопи, наразивши себе на значне опромінення.</p>
+        </div>
+    </div>
+
+    <h2 id="radiation" class="section-title">Поширення радіації</h2>
+    <div class="fade-in">
+        <p style="text-align: center;">Радіоактивна хмара охопила понад 200 тисяч км² європейських земель.</p>
+        <div class="grid">
+            <div class="card"><img src="img/map_1.jpg" alt="Карта 1"></div>
+            <div class="card"><img src="img/map_2.jpg" alt="Карта 2"></div>
+            <div class="card"><img src="img/map_3.jpg" alt="Карта 3"></div>
+        </div>
+    </div>
+
+    <h2 id="heroes" class="section-title">БЕЗПРЕЦЕДЕНТНА МУЖНІСТЬ</h2>
+    
+    <div class="firefighters fade-in">
+        <h3 class="subsection-title" style="color: var(--danger); border-left-color: var(--danger);">Герої-вогнеборці: Перший удар</h3>
+        <p style="margin-bottom: 30px;">40 пожежників боролися з вогнем на даху реактора без спецзахисту, щоб не дати вогню перекинутися на інші блоки.</p>
+        <div class="heroes-grid">
+            <div class="profile"><img src="img/hero_pravyk.jpg" alt="Правик"><h4>Лейтенант Правик</h4></div>
+            <div class="profile"><img src="img/hero_kibenok.jpg" alt="Кібенок"><h4>Лейтенант Кібенок</h4></div>
+            <div class="profile"><img src="img/hero_telyatnikov.jpg" alt="Телятников"><h4>Майор Телятников</h4></div>
+        </div>
+        <p style="font-style: italic; font-size: 0.9rem; text-align: center; margin-top: 20px;">Василь Ігнатенко, Микола Ващук, Микола Титенок, Володимир Тішура померли від променевої хвороби у травні 1986.</p>
+    </div>
+
+    <div class="divers fade-in" style="margin-top: 60px;">
+        <h3 class="subsection-title">Герої-водолази: Запобігання другому вибуху</h3>
+        <p style="margin-bottom: 30px;">Інженери станції спустилися в затоплені радіоактивною водою камери під реактором, щоб вручну відкрити клапани і спустити воду, запобігши тепловому вибуху, який міг знищити частину Європи.</p>
+        <div class="heroes-grid">
+            <div class="profile"><img src="img/diver_ananenko.jpg" alt="Ананенко"><h4>Олексій Ананенко</h4></div>
+            <div class="profile"><img src="img/diver_bespalov.png" alt="Беспалов"><h4>Валерій Беспалов</h4></div>
+            <div class="profile"><img src="img/diver_baranov.jpg" alt="Баранов"><h4>Борис Баранов</h4></div>
+        </div>
+    </div>
+
+   <h2 id="realities" class="section-title">Сучасні реалії та Війна</h2>
+    <div class="realities-block fade-in">
+        <div style="flex: 1; min-width: 300px;">
+            <p>До 2022 року Зона функціонувала як унікальний Чорнобильський радіаційно-екологічний біосферний заповідник. Природа відновлювалася: з'явилися ведмеді, рисі, зубри, коні Пржевальського.</p>
+            <p style="color: var(--danger); font-weight: bold;">Однак через повномасштабне вторгнення Зона стала прикордонним форпостом. Територія густо замінована. Гинуть дикі тварини, а науковці втратили доступ до досліджень.</p>
+        </div>
+        <div style="flex: 1; min-width: 300px;">
+            <img src="img/war_danger.jpg" alt="Замінована зона" style="width: 100%; border-radius: 12px; border: 2px solid var(--danger);">
+        </div>
+    </div>
+
+    <h2 id="culture" class="section-title">Чорнобиль у Культурі</h2>
+    <div class="fade-in">
+        <h3 class="subsection-title">«Постчорнобильська література»</h3>
+        <div class="paralax-books">
+            <div class="paralax-text">Пам'ять крізь слово</div>
+        </div>
+        <div class="grid" style="grid-template-columns: 1fr 2fr; align-items: center;">
+            <img src="img/books_chernobyl.jpg" alt="Книги" style="width: 100%; border-radius: 12px;">
+            <div>
+                <p><strong>«Чорнобиль. Історія ядерної катастрофи» (Сергій Плохій):</strong> Фундаментальна праця Гарвардського професора, український погляд на трагедію та розвінчання радянських міфів.</p>
+                <p><strong>«Марія з полином у кінці століття» (Володимир Яворівський):</strong> Художній роман про долю української родини та евакуацію.</p>
+            </div>
+        </div>
+
+        <h3 class="subsection-title" style="margin-top: 60px;">Світовий кінематограф: Серіал «Чорнобиль»</h3>
+        <p>Міні-серіал від HBO став світовим хітом, передавши атмосферу гнітючої брехні радянської номенклатури, яка жертвувала життями людей.</p>
+        <div class="grid">
+            <div class="card"><img src="img/series_1.jpg" alt="Кадр 1"></div>
+            <div class="card"><img src="img/series_2.jpg" alt="Кадр 2"></div>
+            <div class="card"><img src="img/series_3.jpg" alt="Кадр 3"></div>
+        </div>
+    </div>
+
+    <h2 id="accidents" class="section-title">Один Чорнобиль?</h2>
+    <div class="fade-in">
+        <p style="text-align: center; margin-bottom: 40px;">Насправді на ЧАЕС було три великі аварії, дві з яких радянська влада приховувала.</p>
+        <div class="grid">
+            <div class="card accident-card" style="cursor: pointer;">
+                <img src="img/accident_1982.jpg" alt="1982">
+                <div style="padding: 20px;">
+                    <h3 style="color: var(--yellow);">1982: Перша прихована аварія</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Аварія на 1-му енергоблоці. Викид палива, локальне забруднення, радіація в приміщеннях вище норми в 100 разів.</p>
+                </div>
+            </div>
+            <div class="card accident-card" style="border-color: var(--danger);">
+                <img src="img/reactor.jpg" alt="1986">
+                <div style="padding: 20px;">
+                    <h3 style="color: var(--danger);">1986: Всесвітня катастрофа</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Вибух 4-го енергоблоку, про який знає весь світ.</p>
+                </div>
+            </div>
+            <div class="card accident-card" style="cursor: pointer;">
+                <img src="img/accident_1991.PNG" alt="1991">
+                <div style="padding: 20px;">
+                    <h3 style="color: var(--yellow);">1991: За крок до другого вибуху</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Пожежа на 2-му енергоблоці. Обвал машинної зали, викид радіації та пошкодження обладнання управління.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="conclusion" class="fade-in" style="margin-top: 100px; padding: 40px; background: rgba(255,204,0,0.03); border-radius: 12px; border: 1px solid var(--yellow); text-align: center;">
+        <h2 style="color: var(--yellow); margin-top: 0; text-transform: uppercase;">Чорнобиль: Епілог</h2>
+        <p style="max-width: 900px; margin: 0 auto; line-height: 1.8;">Чорнобильська катастрофа - це подія глобального масштабу, яка назавжди змінила світ. В центрі цієї трагедії стоїть безпрецедентна мужність людей. Герої-вогнеборці та інженери-водолази ціною власного життя і здоров'я врятували континент від повного знищення.</p>
+        <p style="max-width: 900px; margin: 20px auto 0; line-height: 1.8; font-weight: bold; color: var(--yellow);">Сьогодні Чорнобиль - це відкрита рана, унікальний екологічний феномен і водночас вічне застереження про те, що технологічний розвиток неможливий без відповідальності та правди.</p>
+    </div>
+
+</div>
+
+<footer style="background: #000; padding: 60px 20px; margin-top: 100px; border-top: 2px solid var(--yellow); text-align: center;">
+    <p>© 2026 Проєкт "Voice of Priyat"</p>
+    <p>Розробники: Литвиненко Ксенія, Леонтюк Данііл.</p>
+    <p>Група: F3(ОПС)-25</p>
+</footer>
+
+<script>
+    const audio = document.getElementById('hero-audio');
+    const audioBtn = document.getElementById('audio-btn');
+
+    function toggleAudio() {
+        if (audio.paused) {
+            audio.play();
+            audioBtn.innerText = "⏸ Вимкнути звук";
+        } else {
+            audio.pause();
+            audioBtn.innerText = "🔊 Увімкнути звук";
+        }
+    }
+
+    window.addEventListener('load', () => {
+        audio.play().then(() => {
+            audioBtn.innerText = "⏸ Вимкнути звук";
+        }).catch(e => {
+            console.log("Автоплей заблоковано.");
+        });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
